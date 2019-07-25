@@ -1,10 +1,17 @@
 # Software PWM Servo.py
+# -*- coding: utf-8 -*-
+#
+# Solar-boat Project 2019
+# created on: 2019/07/25
+# Author: FENG XUANDA
+#
+#----------------------
 
 import RPi.GPIO as GPIO
 import time
 
-P_SERVO = 22 # GPIO端口号，根据实际修改
-fPWM = 50  # Hz (软件PWM方式，频率不能设置过高)
+P_SERVO = 22           # GPIO端口号，根据实际修改
+fPWM = 50              # Hz (软件PWM方式，频率不能设置过高)
 a = 10
 b = 2
 
