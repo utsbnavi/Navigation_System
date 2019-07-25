@@ -10,8 +10,8 @@
 import RPi.GPIO as GPIO
 import time
 
-P_SERVO = 22           # GPIO端口号，根据实际修改
-fPWM = 50              # Hz (软件PWM方式，频率不能设置过高)
+P_SERVO = 22           # No. of GPIO port
+fPWM = 50              # Hz (software PWM，frequency cannot be too high)
 a = 10
 b = 2
 
