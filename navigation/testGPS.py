@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+#
+# Solar-boat Project 2019
+# created on: 2019/07/25
+# Author: XU GUANGLEI
+#
+#----------------------
+
 from serial import Serial
 from micropyGPS import MicropyGPS
 import threading
