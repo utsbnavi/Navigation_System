@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 #
 # Solar-boat Project 2019
-# created on: 2019/07/25
-# Author: Tetsuro Ninomiya
+#   created on: 2019/07/25
+#   Author: Tetsuro Ninomiya
 #
 
 import time
