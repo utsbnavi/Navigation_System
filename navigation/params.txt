@@ -1,0 +1,19 @@
+--- TIME LIMIT ----
+Time_Limit 1260 [second]
+
+--- PID CONTROL ---
+P 0.5
+I 0.5
+D 0.5
+
+--- WAY POINTS ---
+latitude longitude
+35.864209 140.012839
+
+--- PIN ASSIGN ---
+GPS_IN 
+MODE_IN
+SERVO_IN
+SERVO_OUT
+THURASTER_IN
+THURASTER_OUT
