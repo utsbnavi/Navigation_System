@@ -9,7 +9,7 @@
 #
 
 class PWM:
-    frequency = 0
+    frequency = 50
     def __init__(self):
         self.duty_ratio = 0
         self.error = False
@@ -18,4 +18,4 @@ class PWM:
 
     #def out(self):
 
-if __name__ = "__main__"
+if __name__ = "__main__":
