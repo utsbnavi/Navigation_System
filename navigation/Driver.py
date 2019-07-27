@@ -14,28 +14,59 @@ from Status import Status
 
 class Driver:
     def __init__(self):
-        self.state_ = State(0)
-        self.params_ = Params()
-        self.status_ = Status(self.params_)
+        self.state = State(0)
+        self.params = Params()
+        self.status = Status(self.params)
 
     def load(self, filename):
         print(filename)
 
+    def doOperation(self):
+        while self.state.inTimeLimit():
+            self.readGPS()
+            self.readPWM()
+
+            mode = self.getMode()
+            if mode == 'RC':
+                self.remoteControl()
+            elif mode == 'AN':
+                self.autoNavigation()
+
+            self.outPWM()
+            self.log()
+            
+    def getMode(self):
+        return self.status.mode
+
     def readGPS(self):
-        status = self.status_
+        status = self.status
         #status.readGPS
 
-    #def readPWM(self):
+    def readPWM(self):
+        print('readPWM')
 
-    #def outPWM(self):
+    def outPWM(self):
+        print('outPWM')
 
-    #def finalize(self):
+    def autoNavigation(self):
+        print('autoNavigation')
 
-    #def autoNavigation(self):
+    def remoteControl(self):
+        print('remoteControl')
 
-    #def remoteControl(self):
+    def log(self):
+        time_stamp = self.time_stamp
+        mode = self.getMode()
+        latitude = self.status.latitude
+        longitude = self.status.longitude
+        speed = self.status.speed
+        direction = self.status.boat_direction
+        print(
+            '%d: MODE=%s, LAT=%lf, LON=%lf, SPEED=%lf, DIRECTION=%lf' %
+            (time_stamp, mode, latitude, longitude, speed, direction)
+        )
 
 if __name__ == "__main__":
     print('Driver')
     driver = Driver()
-    print(driver.state_.inTimeLimit())
+    print(driver.state.inTimeLimit())

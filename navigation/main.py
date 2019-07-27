@@ -11,17 +11,15 @@
 import sys
 from Driver import Driver
 
-'''
-NOW I'M MAKING!
-WAIT FOR A WHILE!
-'''
-
 def main():
+    # Initilize
     driver = Driver()
+    # Command line arguments
     args = sys.argv
-    print(args[0])
-    print(args[1])
-    print('Hello, world!')
+    # Load parameters
+    driver.load(args[1])
+    # Control Loop
+    driver.doOperation()
 
 if __name__ == "__main__":
     main()

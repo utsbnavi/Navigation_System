@@ -10,14 +10,14 @@
 
 class Pid:
     def __init__(self):
-        p_ = 0.0
-        i_ = 0.0
-        d_ = 0.0
+        p = 0.0
+        i = 0.0
+        d = 0.0
 
     def setPID(self, p, i, d):
-        self.p_ = p
-        self.i_ = i
-        self.d_ = d
+        self.p = p
+        self.i = i
+        self.d = d
 
     # Implement these function below
     #def getDutyforServo(self, boat_direction, target_direction):

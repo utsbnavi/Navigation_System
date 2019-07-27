@@ -15,14 +15,14 @@ class State:
     #   Argument: time_limit[sec]
     # Stopwatch starts when this class is called
     def __init__(self, time_limit):
-        self.time_limit_ = time_limit
+        self.time_limit = time_limit
         self.startStopWatch()
 
     def startStopWatch(self):
-        self.start_time_ = time.time()
+        self.start_time = time.time()
 
     def getElapsedTime(self):
-        elapsed_time = time.time() - self.start_time_
+        elapsed_time = time.time() - self.start_time
         return elapsed_time
 
     # This function returns:
@@ -30,7 +30,7 @@ class State:
     #   Not -> False
     def inTimeLimit(self):
         elapsed_time = self.getElapsedTime()
-        return elapsed_time < self.time_limit_
+        return elapsed_time < self.time_limit
 
 
 if __name__ == "__main__":
