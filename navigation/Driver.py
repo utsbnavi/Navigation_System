@@ -61,9 +61,10 @@ class Driver:
         longitude = self.status.longitude
         speed = self.status.speed
         direction = self.status.boat_direction
+        servo_duty_ratio = self.status.servo_pwm.duty_ratio
         print(
-            '%d: MODE=%s, LAT=%lf, LON=%lf, SPEED=%lf, DIRECTION=%lf' %
-            (time_stamp, mode, latitude, longitude, speed, direction)
+            '%d: MODE=%s, LAT=%lf, LON=%lf, SPEED=%lf, DIRECTION=%lf, SERVO_DR=%lf' %
+            (time_stamp, mode, latitude, longitude, speed, direction, servo_duty_ratio)
         )
 
 if __name__ == "__main__":

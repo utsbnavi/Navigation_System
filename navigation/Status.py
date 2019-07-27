@@ -29,7 +29,7 @@ class Status:
         self.pid_ = Pid()
         self.gps_data = GpsData()
         self.mode_pwm = Pwm(
-            params.pin_mode_in_, 0)
+            params.pin_mode_in, 0)
         self.servo_pwm = Pwm(
             params.pin_servo_in, params.pin_servo_out)
         self.thruster_pwm_ = Pwm(
