@@ -17,6 +17,7 @@ WAIT FOR A WHILE!
 '''
 
 def main():
+    driver = Driver()
     args = sys.argv
     print(args[0])
     print(args[1])

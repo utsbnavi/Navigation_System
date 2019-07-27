@@ -1,5 +1,5 @@
 --- TIME LIMIT ----
-Time_Limit 1260 [second]
+Time_Limit 12600 [second]
 
 --- PID CONTROL ---
 P 0.5

@@ -9,13 +9,15 @@
 #
 
 class Params:
-    def __init___(self):
+    def __init__(self):
+        self.value = 100
         # pin assign
-        pin_gps_in       = 0
-        pin_mode_in      = 0
-        pin_servo_in     = 0
-        pin_servo_out    = 0
-        pin_thruster_in  = 0
-        pin_thruster_out = 0
+        self.pin_gps_in_ = 0
+        self.pin_mode_in_ = 0
+        self.pin_servo_in_ = 0
+        self.pin_servo_out_ = 0
+        self.pin_thruster_in_ = 0
+        self.pin_thruster_out_ = 0
 
 if __name__ == "__main__":
+    params = Params()

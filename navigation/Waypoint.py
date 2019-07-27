@@ -10,10 +10,19 @@
 
 class Waypoint:
     def __init__(self):
-       self.latitude = []
-       self.longitude = []
-       self.index = 0
+       self.latitude_ = []
+       self.longitude_ = []
+       self.index_ = 0
 
     def addPoint(self, latitude, longitude):
         self.latitude.append(latitude)
         self.longitude.append(longitude)
+
+    def getPoint(self):
+        latitude = self.latitude_[self.index_]
+        longitude = self.longitude_[self.index_]
+        return latitude, longitude
+
+
+if __name__ == "__main__":
+    print('waypoint')

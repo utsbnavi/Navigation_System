@@ -10,16 +10,20 @@
 
 from State import State
 from Params import Params
+from Status import Status
 
 class Driver:
     def __init__(self):
-        self.state = State(0)
-        self.params = Params()
+        self.state_ = State(0)
+        self.params_ = Params()
+        self.status_ = Status(self.params_)
 
     def load(self, filename):
         print(filename)
 
-    #def readGPS(self):
+    def readGPS(self):
+        status = self.status_
+        #status.readGPS
 
     #def readPWM(self):
 
@@ -34,4 +38,4 @@ class Driver:
 if __name__ == "__main__":
     print('Driver')
     driver = Driver()
-    print(driver.state.inTimeLimit())
+    print(driver.state_.inTimeLimit())
