@@ -17,7 +17,7 @@ class Logger:
         self.f = open(Logger.filename, "a")
         self.writer = csv.writer(self.f, lineterminator='\n')
         list = ['TIME_STAMP', 'LATITUDE', 'LONGITUDE']
-        self.f.write(list)
+        self.writer.writerow(list)
 
     def write(self, time_stamp, latitude, longitude):
         list = [time_stamp, latitude, longitude]

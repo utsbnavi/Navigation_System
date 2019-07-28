@@ -20,12 +20,163 @@ class Driver:
         self.state = State(0)
         self.params = Params()
         self.status = Status(self.params)
+        self.logger = Logger()
         self.logger.open()
 
         self.__dir_test = 0
 
     def load(self, filename):
-        print(filename)
+        print('loading', filename)
+        f = open(filename, "r")
+
+        line = f.readline()
+        line = f.readline()
+        self.state.time_limit = int(line.split()[1]) # Time Limit
+
+        line = f.readline()
+        line = f.readline()
+        line = f.readline()
+        p = float(line.split()[1]) # P
+        line = f.readline()
+        i = float(line.split()[1]) # I
+        line = f.readline()
+        d = float(line.split()[1]) # D
+        self.status.pid.setPID(p, i, d)
+
+        line = f.readline()
+        line = f.readline()
+        line = f.readline()
+        num = int(line.split()[1]) # Number of waypoints
+        line = f.readline()
+        for i in range(num):
+            line = f.readline()
+            self.status.waypoint.addPoint(
+                float(line.split()[0]),
+                float(line.split()[1])
+            )
+
+        line = f.readline()
+        line = f.readline()
+
+        line = f.readline()
+        self.params.pin_gps_in = int(line.split()[1])
+        line = f.readline()
+        self.params.pin_mode_in = int(line.split()[1])
+        line = f.readline()
+        self.params.pin_servo_in = int(line.split()[1])
+        line = f.readline()
+        self.params.pin_servo_out = int(line.split()[1])
+        line = f.readline()
+        self.params.pin_thruster_in = int(line.split()[1])
+        line = f.readline()
+        self.params.pin_thruster_in = int(line.split()[1])
+
+        f.close()
+
+    def doOperation(self):
+        while self.state.inTimeLimit():
+            self.readGPS()
+            self.readPWM()
+
+            mode = self.getMode()
+            if mode == 'RC':
+                self.remoteControl()
+            elif mode == 'AN':
+                self.autoNavigation()
+            elif mode == 'TEST':
+                self.testNavigation()
+
+            self.outPWM()
+            self.printLog()
+            time.sleep(1)
+        self.finalize()
+
+
+        f.close()
+
+    def doOperation(self):
+        while self.state.inTimeLimit():
+            self.readGPS()
+            self.readPWM()
+
+            mode = self.getMode()
+            if mode == 'RC':
+                self.remoteControl()
+            elif mode == 'AN':
+                self.autoNavigation()
+            elif mode == 'TEST':
+                self.testNavigation()
+
+            self.outPWM()
+            self.printLog()
+            time.sleep(1)
+        self.finalize()
+
+
+        f.close()
+
+    def doOperation(self):
+        while self.state.inTimeLimit():
+            self.readGPS()
+            self.readPWM()
+
+            mode = self.getMode()
+            if mode == 'RC':
+                self.remoteControl()
+            elif mode == 'AN':
+                self.autoNavigation()
+            elif mode == 'TEST':
+                self.testNavigation()
+
+            self.outPWM()
+            self.printLog()
+            time.sleep(1)
+        self.finalize()
+
+
+        f.close()
+
+    def doOperation(self):
+        while self.state.inTimeLimit():
+            self.readGPS()
+            self.readPWM()
+
+            mode = self.getMode()
+            if mode == 'RC':
+                self.remoteControl()
+            elif mode == 'AN':
+                self.autoNavigation()
+            elif mode == 'TEST':
+                self.testNavigation()
+
+            self.outPWM()
+            self.printLog()
+            time.sleep(1)
+        self.finalize()
+
+
+        f.close()
+
+    def doOperation(self):
+        while self.state.inTimeLimit():
+            self.readGPS()
+            self.readPWM()
+
+            mode = self.getMode()
+            if mode == 'RC':
+                self.remoteControl()
+            elif mode == 'AN':
+                self.autoNavigation()
+            elif mode == 'TEST':
+                self.testNavigation()
+
+            self.outPWM()
+            self.printLog()
+            time.sleep(1)
+        self.finalize()
+
+
+        f.close()
 
     def doOperation(self):
         while self.state.inTimeLimit():
@@ -91,4 +242,4 @@ class Driver:
 if __name__ == "__main__":
     print('Driver')
     driver = Driver()
-    print(driver.state.inTimeLimit())
+    driver.load("parameter_sample.txt")
