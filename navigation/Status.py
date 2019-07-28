@@ -19,7 +19,7 @@ class Status:
     def __init__(self, params):
         self.params = params
         self.waypoint = Waypoint()
-        self.mode = 'AN'
+        self.mode = 'TEST'
         self.speed = 0.0
         self.boat_direction = 0.0
         self.latitude = 0.0
@@ -35,9 +35,16 @@ class Status:
         self.thruster_pwm_ = Pwm(
             params.pin_thruster_in, params.pin_thruster_out)
 
+    def outPwm(self):
+        self.servo_pwm.out()
+        self.thruster_pwm.out()
+
+    def readGps(self):
+        print('readGps: implement me!')
+
+
     # Implement these functions below
     #def readPwm(self):
-    #def outPwm(self):
     #def calcBoatDirection(self):
     #def readGPS(self):
     #def calcTargetDirection(self):

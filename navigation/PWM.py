@@ -8,6 +8,8 @@
 #   Author: 
 #
 
+import RPi.GPIO as GPIO
+
 class Pwm:
     frequency = 50
 
@@ -17,10 +19,23 @@ class Pwm:
         self.pin_in = pin_in
         self.pin_out = pin_out
 
+        # Setup for Out
+        GPIO.setmode(GPIO.BOARD)
+        GPIO.setup(self.pin_out, GPIO.OUT)
+        pwm = GPIO.PWM(self.pin_out, Pwm.frequency)
+        pwm.start(0)
+
+    def finalize(self):
+        GPIO.cleanup()
+
+    def out(self):
+        pwm.ChangeDutyCycle(self.duty_ratio)
+
     # Implement these functions below
     #def read(self):
 
-    #def out(self):
 
 if __name__ == "__main__":
-    print('pwm')
+    pwm_sample = Pwm(0, 22)
+    pwm_sample.out()
+    pwm_sample.finalize()
