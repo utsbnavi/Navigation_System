@@ -12,6 +12,8 @@ from State import State
 from Params import Params
 from Status import Status
 from Logger import Logger
+from PwmOut import PwmOut
+from Pid import Pid
 
 import time
 
@@ -20,6 +22,8 @@ class Driver:
         self.state = State(0)
         self.params = Params()
         self.status = Status(self.params)
+        self.pwm_out = PwmOut(self.params.pin_servo_out, self.paramas.pin_thruster_out)
+        self.pid = Pid()
         self.logger = Logger()
         self.logger.open()
 
@@ -41,7 +45,7 @@ class Driver:
         i = float(line.split()[1]) # I
         line = f.readline()
         d = float(line.split()[1]) # D
-        self.status.pid.setPID(p, i, d)
+        self.pid.setPID(p, i, d)
 
         line = f.readline()
         line = f.readline()
@@ -54,24 +58,8 @@ class Driver:
                 float(line.split()[0]),
                 float(line.split()[1])
             )
-
-        line = f.readline()
-        line = f.readline()
-
-        line = f.readline()
-        self.params.pin_gps_in = int(line.split()[1])
-        line = f.readline()
-        self.params.pin_mode_in = int(line.split()[1])
-        line = f.readline()
-        self.params.pin_servo_in = int(line.split()[1])
-        line = f.readline()
-        self.params.pin_servo_out = int(line.split()[1])
-        line = f.readline()
-        self.params.pin_thruster_in = int(line.split()[1])
-        line = f.readline()
-        self.params.pin_thruster_in = int(line.split()[1])
-
         f.close()
+        return
 
     def doOperation(self):
         while self.state.inTimeLimit():
@@ -90,129 +78,30 @@ class Driver:
             self.printLog()
             time.sleep(1)
         self.finalize()
-
-
-        f.close()
-
-    def doOperation(self):
-        while self.state.inTimeLimit():
-            self.readGPS()
-            self.readPWM()
-
-            mode = self.getMode()
-            if mode == 'RC':
-                self.remoteControl()
-            elif mode == 'AN':
-                self.autoNavigation()
-            elif mode == 'TEST':
-                self.testNavigation()
-
-            self.outPWM()
-            self.printLog()
-            time.sleep(1)
-        self.finalize()
-
-
-        f.close()
-
-    def doOperation(self):
-        while self.state.inTimeLimit():
-            self.readGPS()
-            self.readPWM()
-
-            mode = self.getMode()
-            if mode == 'RC':
-                self.remoteControl()
-            elif mode == 'AN':
-                self.autoNavigation()
-            elif mode == 'TEST':
-                self.testNavigation()
-
-            self.outPWM()
-            self.printLog()
-            time.sleep(1)
-        self.finalize()
-
-
-        f.close()
-
-    def doOperation(self):
-        while self.state.inTimeLimit():
-            self.readGPS()
-            self.readPWM()
-
-            mode = self.getMode()
-            if mode == 'RC':
-                self.remoteControl()
-            elif mode == 'AN':
-                self.autoNavigation()
-            elif mode == 'TEST':
-                self.testNavigation()
-
-            self.outPWM()
-            self.printLog()
-            time.sleep(1)
-        self.finalize()
-
-
-        f.close()
-
-    def doOperation(self):
-        while self.state.inTimeLimit():
-            self.readGPS()
-            self.readPWM()
-
-            mode = self.getMode()
-            if mode == 'RC':
-                self.remoteControl()
-            elif mode == 'AN':
-                self.autoNavigation()
-            elif mode == 'TEST':
-                self.testNavigation()
-
-            self.outPWM()
-            self.printLog()
-            time.sleep(1)
-        self.finalize()
-
-
-        f.close()
-
-    def doOperation(self):
-        while self.state.inTimeLimit():
-            self.readGPS()
-            self.readPWM()
-
-            mode = self.getMode()
-            if mode == 'RC':
-                self.remoteControl()
-            elif mode == 'AN':
-                self.autoNavigation()
-            elif mode == 'TEST':
-                self.testNavigation()
-
-            self.outPWM()
-            self.printLog()
-            time.sleep(1)
-        self.finalize()
+        return
             
     def getMode(self):
         return self.status.mode
 
     def readGps(self):
         self.status.readGps()
+        return
 
     def readPWM(self):
         print('no readPWM')
+        return
 
     def outPWM(self):
-        self.status.outPwm()
+        self.pwm_out.updateDutyRatio()
+        return
 
     def autoNavigation(self):
         print('no autoNavigation')
+        return
 
     def remoteControl(self):
         print('no remoteControl')
+        return
 
     def printLog(self):
         time_stamp = self.time_stamp
@@ -227,17 +116,20 @@ class Driver:
             (time_stamp[0], time_stamp[1], time_stamp[2], mode, latitude, longitude, speed, direction, servo_duty_ratio)
         )
         self.logger.write(time_stamp, latitude, longitude)
+        return
 
     def finalize(self):
         self.logger.close()
+        return
 
     def testNavigation(self):
         duty = 10 / 180 * self.__dir_test + 2.5
-        status.servo_pwm.duty_ratio = duty
+        self.pwm_out.servo_duty_ratio = duty
         self.__dir_test += 5
         self.__dir_test = self.__dir_test % 180
         # Constant pwm for thruster
-        status.thruster_pwm.duty_ratio = 7.25
+        self.pwm_out.thruster_duty_ratio = 7.25
+        return
 
 if __name__ == "__main__":
     print('Driver')

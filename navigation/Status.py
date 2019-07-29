@@ -11,9 +11,7 @@
 from State import State
 from Params import Params
 from Waypoint import Waypoint
-from Pid import Pid
-#from GpsData import GpsData
-#from Pwm import Pwm
+from GpsData import GpsData
 
 class Status:
     def __init__(self, params):
@@ -27,18 +25,7 @@ class Status:
         self.altitude = 0.0
         self.time_stamp = 0
         self.target_direction = 0.0
-        self.pid = Pid()
         self.gps_data = GpsData()
-        self.mode_pwm = Pwm(
-            params.pin_mode_in, 0)
-        self.servo_pwm = Pwm(
-            params.pin_servo_in, params.pin_servo_out)
-        self.thruster_pwm_ = Pwm(
-            params.pin_thruster_in, params.pin_thruster_out)
-
-    def outPwm(self):
-        self.servo_pwm.out()
-        self.thruster_pwm.out()
 
     def readGps(self):
         self.gps_data.read()
@@ -48,7 +35,6 @@ class Status:
         self.altitude = self.gps_data.altitude
 
     # Implement these functions below
-    #def readPwm(self):
     #def calcBoatDirection(self):
     #def calcTargetDirection(self):
         #self.target_direction =

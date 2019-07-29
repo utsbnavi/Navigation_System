@@ -14,9 +14,9 @@ class Params:
         self.pin_gps_in = 0
         self.pin_mode_in = 0
         self.pin_servo_in = 0
-        self.pin_servo_out = 0
+        self.pin_servo_out = 12 # GPIO 18
         self.pin_thruster_in = 0
-        self.pin_thruster_out = 0
+        self.pin_thruster_out = 35 # GPIO 19
 
 if __name__ == "__main__":
     params = Params()
