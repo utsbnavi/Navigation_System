@@ -223,8 +223,8 @@ class Driver:
         direction = self.status.boat_direction
         servo_duty_ratio = self.status.servo_pwm.duty_ratio
         print(
-            '%d: MODE=%s, LAT=%lf, LON=%lf, SPEED=%lf, DIRECTION=%lf, SERVO_DR=%lf' %
-            (time_stamp, mode, latitude, longitude, speed, direction, servo_duty_ratio)
+            '%2d:%02d:%04.1f MODE=%s, LAT=%2.4f, LON=%2.4f, SPEED=%lf, DIRECTION=%lf, SERVO_DR=%lf' %
+            (time_stamp[0], time_stamp[1], time_stamp[2], mode, latitude, longitude, speed, direction, servo_duty_ratio)
         )
         self.logger.write(time_stamp, latitude, longitude)
 

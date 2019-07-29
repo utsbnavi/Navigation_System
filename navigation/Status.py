@@ -24,11 +24,11 @@ class Status:
         self.boat_direction = 0.0
         self.latitude = 0.0
         self.longitude = 0.0
+        self.altitude = 0.0
         self.time_stamp = 0
         self.target_direction = 0.0
         self.pid = Pid()
-        #self.gps_data = GpsData()
-        '''
+        self.gps_data = GpsData()
         self.mode_pwm = Pwm(
             params.pin_mode_in, 0)
         self.servo_pwm = Pwm(
@@ -40,26 +40,16 @@ class Status:
         self.servo_pwm.out()
         self.thruster_pwm.out()
 
-    '''
-
     def readGps(self):
-        print('readGps: implement me!')
-        '''
-        (Ninomiya)
-        I tried to implement GPS function in GpsData.py
-        But I don't know about threading.
-        So can you implement GPS function?
-
-        You just add latitude to [self.latitude],
-        add longitude to [self.longitude],
-        and add speed to [self.longitude].
-        '''
-
+        self.gps_data.read()
+        self.timestamp = self.gps_data.timestamp
+        self.latitude = self.gps_data.latitude
+        self.longitude = self.gps_data.longitude
+        self.altitude = self.gps_data.altitude
 
     # Implement these functions below
     #def readPwm(self):
     #def calcBoatDirection(self):
-    #def readGPS(self):
     #def calcTargetDirection(self):
         #self.target_direction =
 
