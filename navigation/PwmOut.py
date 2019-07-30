@@ -5,7 +5,7 @@
 #
 # Solar-boat Project 2019
 #   created on: 2019/07/27
-#   Author: 
+#   Author: FENG XUANDA
 #
 
 import RPi.GPIO as GPIO
@@ -16,8 +16,8 @@ class PwmOut:
     def __init__(self, pin_servo, pin_thruster):
         self.pin_servo = pin_servo
         self.pin_thruster = pin_thruster
-        self.servo_duty_ratio = 0
-        self.thruster_duty_ratio = 0
+        self.servo_duty_ratio = 0.0
+        self.thruster_duty_ratio = 7.5
 
         # Setup for Out
         GPIO.setmode(GPIO.BOARD)
@@ -29,8 +29,9 @@ class PwmOut:
         self.pwm_thruster.start(0)
         return
 
-    def gpioCleanUp(self):
-        GPIO.cleanup()
+    def finalize(self):
+        GPIO.cleanup(self.pin_servo)
+        self.pwm_thruster.ChangeDutyCycle(5)
         return
 
     def updateDutyRatio(self):

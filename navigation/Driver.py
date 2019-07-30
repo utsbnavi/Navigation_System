@@ -13,7 +13,7 @@ from Params import Params
 from Status import Status
 from Logger import Logger
 from PwmOut import PwmOut
-from Pid import Pid
+from Pid import PositionalPID
 
 import time
 
@@ -23,7 +23,7 @@ class Driver:
         self.params = Params()
         self.status = Status(self.params)
         self.pwm_out = PwmOut(self.params.pin_servo_out, self.paramas.pin_thruster_out)
-        self.pid = Pid()
+        self.pid = PositionalPID()
         self.logger = Logger()
         self.logger.open()
 
@@ -63,8 +63,9 @@ class Driver:
 
     def doOperation(self):
         while self.state.inTimeLimit():
-            self.readGPS()
+            self.readGps()
             self.readPWM()
+            self.updateStatus()
 
             mode = self.getMode()
             if mode == 'RC':
@@ -76,8 +77,7 @@ class Driver:
 
             self.outPWM()
             self.printLog()
-            time.sleep(1)
-        self.finalize()
+            time.sleep(2)
         return
             
     def getMode(self):
@@ -85,6 +85,15 @@ class Driver:
 
     def readGps(self):
         self.status.readGps()
+        return
+
+    def updateStatus(self):
+        status = self.status
+        status.calcTargetDirection()
+        status.calcTargetDistance()
+        status.updateTarget()
+        if status.isGpsError():
+            status.mode = 'RC'
         return
 
     def readPWM(self):
@@ -96,30 +105,41 @@ class Driver:
         return
 
     def autoNavigation(self):
-        print('no autoNavigation')
+        boat_direction = self.status.boat_direction
+        target_direction = self.status.target_direction
+        servo_duty_ratio = self.pid.getStepSignal(target_direction, boat_direction)
+        self.pwm_out.servo_duty_ratio = servo_duty_ratio
+        self.pwm_out.thruster_duty_ratio = 9.0
         return
 
     def remoteControl(self):
-        print('no remoteControl')
+        # Do nothing
         return
 
     def printLog(self):
-        time_stamp = self.time_stamp
+        timestamp_string = self.status.timestamp_string
         mode = self.getMode()
         latitude = self.status.latitude
         longitude = self.status.longitude
         speed = self.status.speed
         direction = self.status.boat_direction
-        servo_duty_ratio = self.status.servo_pwm.duty_ratio
+        servo_dr = self.pwm_out.servo_duty_ratio
+        thruster_dr = self.pwm_out.thruster_duty_ratio
+        t_direction = self.status.target_direction
+        t_distance = self.status.target_distance
         print(
-            '%2d:%02d:%04.1f MODE=%s, LAT=%2.4f, LON=%2.4f, SPEED=%lf, DIRECTION=%lf, SERVO_DR=%lf' %
-            (time_stamp[0], time_stamp[1], time_stamp[2], mode, latitude, longitude, speed, direction, servo_duty_ratio)
+            '%s MODE=%s, LAT=%2.4f, LON=%2.4f, SPEED=%lf, DIRECTION=%lf' %
+            (timestamp_string, mode, latitude, longitude, speed, direction)
         )
-        self.logger.write(time_stamp, latitude, longitude)
+        print('DUTY (SERVO, THRUSTER): (%lf, %lf)' % (servo_dr, thruster_dr))
+        print('TARGET (DIRECTION, DISTANCE): (%lf, %lf)' % (t_direction, t_distance))
+        print('')
+        self.logger.write(timestamp_string, latitude, longitude)
         return
 
     def finalize(self):
         self.logger.close()
+        self.pwm_out.finalize()
         return
 
     def testNavigation(self):
@@ -129,6 +149,8 @@ class Driver:
         self.__dir_test = self.__dir_test % 180
         # Constant pwm for thruster
         self.pwm_out.thruster_duty_ratio = 7.25
+            elif mode == 'AN':
+                self.autoNavigation()
         return
 
 if __name__ == "__main__":

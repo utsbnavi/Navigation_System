@@ -13,6 +13,8 @@ from Params import Params
 from Waypoint import Waypoint
 from GpsData import GpsData
 
+import math
+
 class Status:
     def __init__(self, params):
         self.params = params
@@ -22,23 +24,70 @@ class Status:
         self.boat_direction = 0.0
         self.latitude = 0.0
         self.longitude = 0.0
-        self.altitude = 0.0
-        self.time_stamp = 0
+        self.timestamp_string = ''
         self.target_direction = 0.0
+        self.target_distance = 0.0
         self.gps_data = GpsData()
 
     def readGps(self):
-        self.gps_data.read()
-        self.timestamp = self.gps_data.timestamp
-        self.latitude = self.gps_data.latitude
-        self.longitude = self.gps_data.longitude
-        self.altitude = self.gps_data.altitude
+        if self.gps_data.read():
+            self.timestamp_string = self.gps_data.timestamp_string
+            self.latitude = self.gps_data.latitude
+            self.longitude = self.gps_data.longitude
+            self.speed = self.gps_data.speed[2] #kph
+            self.boat_direction = self.gps_data.course
+            return True
+        else:
+            return False
 
-    # Implement these functions below
-    #def calcBoatDirection(self):
-    #def calcTargetDirection(self):
-        #self.target_direction =
+    def isGpsError(self):
+        if self.latitude < 0.00001 && self.longitude < 0.00001:
+            return True
+        else:
+            return False
 
+    def calcTargetDistance(self):
+        r = 6378.137 #[km] # radius of the Earth
+        wp = self.waypoint
+        x1 = math.radians(self.latitude)
+        y1 = math.radians(self.longitude)
+        x2 = math.radians(wp.getPoint[0])
+        y2 = math.radians(wp.getPoint[1])
+        dx = x2 -x1
+        d = r * math.acos(
+            math.sin(y1) * math.sin(y2) +
+            math.cos(y1) * math.cos(y2) * math.cos(dx)
+        ) # [km]
+        self.target_distance = d * 1000 # [m]
+        return
+
+    def calcTargetDirection(self):
+        wp = self.waypoint
+        x1 = math.radians(self.latitude)
+        y1 = math.radians(self.longitude)
+        x2 = math.radians(wp.getPoint[0])
+        y2 = math.radians(wp.getPoint[1])
+        dx = x2 -x1
+        dir = 90 - math.degrees(math.atan2(
+            math.sin(dx), 
+            math.cos(y1) * math.tan(y2) - math.sin(y1) * math.cos(dx)
+        ))
+        self.target_direction = dir # degrees
+        return
+
+    def hasPassedWayPoint(self):
+        if self.target_distance < 1.0:
+            return True
+        else:
+            return False
+
+    def updateTarget(self):
+        if self.hasPassedWayPoint():
+            key = self.waypoint.nextPoint()
+            if !key:
+                print('AN has finished!')
+                self.mode = 'RC'
+        return
 
 if __name__ == "__main__":
     params = Params()
