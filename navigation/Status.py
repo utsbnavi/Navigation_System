@@ -41,7 +41,7 @@ class Status:
             return False
 
     def isGpsError(self):
-        if self.latitude < 0.00001 && self.longitude < 0.00001:
+        if self.latitude < 0.00001 and self.longitude < 0.00001:
             return True
         else:
             return False
@@ -49,11 +49,9 @@ class Status:
     def calcTargetDistance(self):
         r = 6378.137 #[km] # radius of the Earth
         wp = self.waypoint
-        x1 = math.radians(self.latitude)
         y1 = math.radians(self.longitude)
-        x2 = math.radians(wp.getPoint[0])
-        y2 = math.radians(wp.getPoint[1])
-        dx = x2 -x1
+        y2 = math.radians(wp.getPoint()[1])
+        dx = math.radians(wp.getPoint()[0] - self.latitude)
         d = r * math.acos(
             math.sin(y1) * math.sin(y2) +
             math.cos(y1) * math.cos(y2) * math.cos(dx)
@@ -63,15 +61,15 @@ class Status:
 
     def calcTargetDirection(self):
         wp = self.waypoint
-        x1 = math.radians(self.latitude)
         y1 = math.radians(self.longitude)
-        x2 = math.radians(wp.getPoint[0])
-        y2 = math.radians(wp.getPoint[1])
-        dx = x2 -x1
+        y2 = math.radians(wp.getPoint()[1])
+        dx = math.radians(wp.getPoint()[0] - self.latitude)
         dir = 90 - math.degrees(math.atan2(
-            math.sin(dx), 
-            math.cos(y1) * math.tan(y2) - math.sin(y1) * math.cos(dx)
+            math.cos(y1) * math.tan(y2) - math.sin(y1) * math.cos(dx),
+            math.sin(dx) 
         ))
+        if dir < 0:
+            dir = 360 + dir
         self.target_direction = dir # degrees
         return
 
@@ -84,7 +82,7 @@ class Status:
     def updateTarget(self):
         if self.hasPassedWayPoint():
             key = self.waypoint.nextPoint()
-            if !key:
+            if not key:
                 print('AN has finished!')
                 self.mode = 'RC'
         return

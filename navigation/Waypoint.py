@@ -18,16 +18,16 @@ class Waypoint:
     def addPoint(self, latitude, longitude):
         self.latitude.append(latitude)
         self.longitude.append(longitude)
-        self.__num++
+        self.__num += 1
         return
 
     def getPoint(self):
-        latitude = self.latitude[self.index]
-        longitude = self.longitude[self.index]
+        latitude = self.latitude[self.__index]
+        longitude = self.longitude[self.__index]
         return [latitude, longitude]
 
     def nextPoint(self):
-        self.__index++
+        self.__index += 1
         if self.__index == self.__num:
             return False
         else:

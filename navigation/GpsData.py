@@ -64,7 +64,7 @@ class GpsData:
         lon = self.longitude
         alt = self.altitude
         print('%2d:%02d:%04.1f' % (t[0], t[1], t[2]))
-        print('latitude: %2.4f, longitude: %2.4f' % (lat, lon))
+        print('latitude: %.5f, longitude: %.5f' % (lat, lon))
         print('altitude: %f' % (alt))
         print('course: %f' % (self.course))
         print('speed:', self.speed)

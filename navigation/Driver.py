@@ -22,7 +22,7 @@ class Driver:
         self.state = State(0)
         self.params = Params()
         self.status = Status(self.params)
-        self.pwm_out = PwmOut(self.params.pin_servo_out, self.paramas.pin_thruster_out)
+        self.pwm_out = PwmOut(self.params.pin_servo_out, self.params.pin_thruster_out)
         self.pid = PositionalPID()
         self.logger = Logger()
         self.logger.open()
@@ -127,12 +127,13 @@ class Driver:
         thruster_dr = self.pwm_out.thruster_duty_ratio
         t_direction = self.status.target_direction
         t_distance = self.status.target_distance
+        print(timestamp_string)
         print(
-            '%s MODE=%s, LAT=%2.4f, LON=%2.4f, SPEED=%lf, DIRECTION=%lf' %
-            (timestamp_string, mode, latitude, longitude, speed, direction)
+            '[%s MODE] LAT=%.5f, LON=%.5f, SPEED=%.2f [km/h], DIRECTION=%lf' %
+            (mode, latitude, longitude, speed, direction)
         )
-        print('DUTY (SERVO, THRUSTER): (%lf, %lf)' % (servo_dr, thruster_dr))
-        print('TARGET (DIRECTION, DISTANCE): (%lf, %lf)' % (t_direction, t_distance))
+        print('DUTY (SERVO, THRUSTER):       (%lf, %lf)(2.5~12.5)' % (servo_dr, thruster_dr))
+        print('TARGET (DIRECTION, DISTANCE): (%lf, %lf [m])' % (t_direction, t_distance))
         print('')
         self.logger.write(timestamp_string, latitude, longitude)
         return
@@ -149,8 +150,6 @@ class Driver:
         self.__dir_test = self.__dir_test % 180
         # Constant pwm for thruster
         self.pwm_out.thruster_duty_ratio = 7.25
-            elif mode == 'AN':
-                self.autoNavigation()
         return
 
 if __name__ == "__main__":

@@ -16,15 +16,15 @@ class PwmOut:
     def __init__(self, pin_servo, pin_thruster):
         self.pin_servo = pin_servo
         self.pin_thruster = pin_thruster
-        self.servo_duty_ratio = 0.0
+        self.servo_duty_ratio = 2.5
         self.thruster_duty_ratio = 7.5
 
         # Setup for Out
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.pin_servo, GPIO.OUT)
         GPIO.setup(self.pin_thruster, GPIO.OUT)
-        self.pwm_servo = GPIO.PWM(self.pin_servo, Pwm.frequency)
-        self.pwm_thruster = GPIO.PWM(self.pin_thruster, Pwm.frequency)
+        self.pwm_servo = GPIO.PWM(self.pin_servo, PwmOut.frequency)
+        self.pwm_thruster = GPIO.PWM(self.pin_thruster, PwmOut.frequency)
         self.pwm_servo.start(0)
         self.pwm_thruster.start(0)
         return
