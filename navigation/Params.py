@@ -11,12 +11,11 @@
 class Params:
     def __init__(self):
         # pin assign
-        self.pin_gps_in = 0
-        self.pin_mode_in = 0
-        self.pin_servo_in = 0
-        self.pin_servo_out = 12 # GPIO 18
-        self.pin_thruster_in = 0
-        self.pin_thruster_out = 35 # GPIO 19
+        self.pin_mode_in      =  7 # GPIO  4
+        self.pin_servo_in     =  3 # GPIO  2
+        self.pin_thruster_in  =  5 # GPIO  3
+        self.pin_servo_out    = 12 # GPIO 18
+        self.pin_thruster_out = 33 # GPIO 13
 
 if __name__ == "__main__":
     params = Params()

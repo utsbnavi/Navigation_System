@@ -20,7 +20,6 @@ class PwmOut:
         self.thruster_duty_ratio = 7.5
 
         # Setup for Out
-        GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.pin_servo, GPIO.OUT)
         GPIO.setup(self.pin_thruster, GPIO.OUT)
         self.pwm_servo = GPIO.PWM(self.pin_servo, PwmOut.frequency)
@@ -40,6 +39,7 @@ class PwmOut:
         return
 
 if __name__ == "__main__":
+    GPIO.setmode(GPIO.BOARD)
     pwm_sample = PwmOut(22, 22)
-    pwm_sample.out()
+    pwm_sample.updateDutyRatio()
     pwm_sample.finalize()
