@@ -1,0 +1,13 @@
+--- TIME LIMIT ----
+Time_Limit 12600 [second]
+
+--- PID CONTROL ---
+P 0.5
+I 0.5
+D 0.5
+
+--- WAY POINTS ---
+NUM 2
+latitude longitude
+35.864209 140.012839
+35.864209 140.012839
