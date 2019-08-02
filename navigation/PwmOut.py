@@ -16,7 +16,7 @@ class PwmOut:
     def __init__(self, pin_servo, pin_thruster):
         self.pin_servo = pin_servo
         self.pin_thruster = pin_thruster
-        self.servo_duty_ratio = 2.5
+        self.servo_duty_ratio = 7.5
         self.thruster_duty_ratio = 7.5
 
         # Setup for Out

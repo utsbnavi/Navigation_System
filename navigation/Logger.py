@@ -16,12 +16,11 @@ class Logger:
     def open(self):
         self.f = open(Logger.filename, "a")
         self.writer = csv.writer(self.f, lineterminator='\n')
-        list = ['TIME_STAMP', 'LATITUDE', 'LONGITUDE']
-        self.writer.writerow(list)
+        log_list = ['TIME_STAMP', 'MODE', 'LATITUDE', 'LONGITUDE', 'T_LATITUDE', 'T_LONGITUDE']
+        self.writer.writerow(log_list)
 
-    def write(self, time_stamp, latitude, longitude):
-        list = [time_stamp, latitude, longitude]
-        self.writer.writerow(list)
+    def write(self, log_list):
+        self.writer.writerow(log_list)
 
     def close(self):
         self.f.write("END\n")
@@ -30,5 +29,5 @@ class Logger:
 if __name__ == "__main__":
     logger = Logger()
     logger.open()
-    logger.write(1,1,1)
+    logger.write([1,1,1])
     logger.close()
