@@ -81,19 +81,16 @@ class Driver:
         return self.status.mode
 
     def updateMode(self):
-        mode_duty_ratio = self.pwm_read.duty_ratio[0]
-        if  mode_duty_ratio < 7.5:
+        mode_duty_ratio = self.pwm_read.pulse_width[0]
+        if  mode_duty_ratio < 1500:
             self.status.mode = 'RC'
-        elif mode_duty_ratio >= 7.5:
+        elif mode_duty_ratio >= 1500:
             self.status.mode = 'AN'
         return
 
     def readGps(self):
         self.status.readGps()
-        duty_ratio = self.pwm_read.duty_ratio
         self.updateMode()
-        self.pwm_out.servo_duty_ratio = duty_ratio[1]
-        self.pwm_out.thruster_duty_ratio = duty_ratio[2]
         #if self.status.isGpsError():
             #self.status.mode = 'RC'
         return
@@ -106,12 +103,12 @@ class Driver:
         return
 
     def readPWM(self):
-        self.pwm_read.calcDutyRatio()
-        # self.pwm_read.printPulseWidth()
+        self.pwm_out.servo_pulsewidth = self.pwm_read.pulse_width[1]
+        self.pwm_out.thruster_pulsewidth = self.pwm_read.pulse_width[2]
         return
 
     def outPWM(self):
-        self.pwm_out.updateDutyRatio()
+        self.pwm_out.updatePulsewidth()
         return
 
     def autoNavigation(self):

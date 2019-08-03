@@ -1,45 +1,64 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# Pwm.py
+# PwmOut.py
 #
 # Solar-boat Project 2019
 #   created on: 2019/07/27
 #   Author: FENG XUANDA
 #
 
-import RPi.GPIO as GPIO
+import pigpio
+import time
 
 class PwmOut:
+    # [Servo motor]
+    #
+
+    # [T100 ESC]
+    # Max Update Rate : 400 Hz
+    # Stopped     : 1500 microseconds
+    # Max forward : 1900 microseconds
+    # Max reverse : 1100 microseconds
+
     frequency = 50
 
     def __init__(self, pin_servo, pin_thruster):
+        # GPIO number
         self.pin_servo = pin_servo
         self.pin_thruster = pin_thruster
-        self.servo_duty_ratio = 7.5
-        self.thruster_duty_ratio = 7.5
+        self.servo_pulsewidth = 1500
+        self.thruster_pulsewidth = 1500
 
         # Setup for Out
-        GPIO.setup(self.pin_servo, GPIO.OUT)
-        GPIO.setup(self.pin_thruster, GPIO.OUT)
-        self.pwm_servo = GPIO.PWM(self.pin_servo, PwmOut.frequency)
-        self.pwm_thruster = GPIO.PWM(self.pin_thruster, PwmOut.frequency)
-        self.pwm_servo.start(0)
-        self.pwm_thruster.start(0)
+        self.pi = pigpio.pi()
+        self.pi.set_mode(self.pin_servo, pigpio.OUTPUT)
+        self.pi.set_mode(self.pin_thruster, pigpio.OUTPUT)
+        self.pi.set_servo_pulsewidth(self.pin_servo, 1500) # neutral
+        self.pi.set_servo_pulsewidth(self.pin_thruster, 1500) # neutral
         return
 
     def finalize(self):
-        GPIO.cleanup(self.pin_servo)
-        self.pwm_thruster.ChangeDutyCycle(5)
+        self.pi.set_servo_pulsewidth(self.pin_servo, 1500) # neutral
+        self.pi.set_servo_pulsewidth(self.pin_thruster, 1500) # neutral
         return
 
-    def updateDutyRatio(self):
-        self.pwm_servo.ChangeDutyCycle(self.servo_duty_ratio)
-        self.pwm_thruster.ChangeDutyCycle(self.thruster_duty_ratio)
+    def updatePulsewidth(self):
+        self.pi.set_servo_pulsewidth(self.pin_servo, self.servo_pulsewidth)
+        self.pi.set_servo_pulsewidth(self.pin_thruster, self.thruster_pulsewidth)
         return
 
 if __name__ == "__main__":
-    GPIO.setmode(GPIO.BOARD)
-    pwm_sample = PwmOut(22, 22)
-    pwm_sample.updateDutyRatio()
-    pwm_sample.finalize()
+    sample = PwmOut(18, 13)
+    num = 80
+    neutral_to_max = 1900 - 1500
+    dp = neutral_to_max / num
+    pulsewidth = 1500
+    # move a servo motor
+    for i in range(num):
+        time.sleep(0.5)
+        servo_pulsewidth = servo_pulsewidth + dp
+        sample.servo_pulsewidth = servo_pulsewidth
+        sample.updatePulsewidth()
+    sample.finalize()
+        

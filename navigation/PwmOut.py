@@ -11,6 +11,15 @@
 import RPi.GPIO as GPIO
 
 class PwmOut:
+    # [Servo motor]
+    #
+
+    # [T100 ESC]
+    # Max Update Rate : 400 Hz
+    # Stopped     : 1500 microseconds
+    # Max forward : 1900 microseconds
+    # Max reverse : 1100 microseconds
+
     frequency = 50
 
     def __init__(self, pin_servo, pin_thruster):
