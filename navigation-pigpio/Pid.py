@@ -44,7 +44,7 @@ class PositionalPID:
 
         self.direction = self.PidOutput*30                                 
 
-        duty = 2 / 180 * (self.direction + 90) + 0.5                         
+        duty = 1000 / 180 * (self.direction + 90) + 1000                         
         
         self.PIDErrADD += Err
         self.ErrBack = Err
