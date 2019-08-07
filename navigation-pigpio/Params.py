@@ -14,8 +14,8 @@ class Params:
         self.pin_mode_in      =  4 # GPIO  4 # PIN  7
         self.pin_servo_in     =  2 # GPIO  2 # PIN  3
         self.pin_thruster_in  =  3 # GPIO  3 # PIN  5
-        self.pin_servo_out    = 18 # GPIO 18 # PIN 12
-        self.pin_thruster_out = 13 # GPIO 13 # PIN 33
+        self.pin_servo_out    = 23 # GPIO 23 # PIN 16
+        self.pin_thruster_out = 24 # GPIO 24 # PIN 18
 
 if __name__ == "__main__":
     params = Params()

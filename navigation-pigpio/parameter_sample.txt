@@ -1,5 +1,6 @@
---- TIME LIMIT ----
+--- TIME----
 Time_Limit 12600 [second]
+Sleep_time 1 [second]
 
 --- PID CONTROL ---
 P 0.1

@@ -23,6 +23,7 @@ class Driver:
         self.state = State(0)
         self.params = Params()
         self.status = Status(self.params)
+        self.sleep_time = 1
         self.pwm_read = PwmRead(self.params.pin_mode_in, self.params.pin_servo_in, self.params.pin_thruster_in)
         self.pwm_out = PwmOut(self.params.pin_servo_out, self.params.pin_thruster_out)
         self.pid = PositionalPID()
@@ -36,6 +37,8 @@ class Driver:
         line = f.readline()
         line = f.readline()
         self.state.time_limit = int(line.split()[1]) # Time Limit
+        line = f.readline()
+        self.sleep_time = int(line.split()[1]) # Sleep time
 
         line = f.readline()
         line = f.readline()
@@ -74,7 +77,7 @@ class Driver:
 
             self.outPWM()
             self.printLog()
-            time.sleep(10)
+            time.sleep(self.sleep_time)
         return
             
     def getMode(self):
