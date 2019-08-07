@@ -49,25 +49,29 @@ class Status:
     def calcTargetDistance(self):
         r = 6378.137 #[km] # radius of the Earth
         wp = self.waypoint
-        y1 = math.radians(self.longitude)
-        y2 = math.radians(wp.getPoint()[1])
-        dx = math.radians(wp.getPoint()[0] - self.latitude)
-        d = r * math.acos(
-            math.sin(y1) * math.sin(y2) +
-            math.cos(y1) * math.cos(y2) * math.cos(dx)
-        ) # [km]
-        self.target_distance = d * 1000 # [m]
+        lon1 = math.radians(self.longitude)
+        lon2 = math.radians(wp.getPoint()[1])
+        lat2 = math.radians(wp.getPoint()[0])
+        lat1 = math.radians(self.latitude)
+        dlon = lon2 - lon1  
+        dlat = lat2 - lat1  
+        a = math.sin(dlat/2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon/2)**2 
+        c = 2 * math.asin(math.sqrt(a))  
+       
+        self.target_distance = c * r * 1000 # [m]
         return
 
     def calcTargetDirection(self):
         wp = self.waypoint
-        y1 = math.radians(self.longitude)
-        y2 = math.radians(wp.getPoint()[1])
-        dx = math.radians(wp.getPoint()[0] - self.latitude)
-        dir = 90 - math.degrees(math.atan2(
-            math.cos(y1) * math.tan(y2) - math.sin(y1) * math.cos(dx),
-            math.sin(dx) 
-        ))
+        radLonA = math.radians(self.longitude)
+        radLonB = math.radians(wp.getPoint()[1])
+        radLatB = math.radians(wp.getPoint()[0])
+        radLatA = math.radians(self.latitude)
+        dLong = radLonB - radLonA
+        y = math.sin(dLong) * math.cos(radLatB) 
+        x = math.cos(radLatA) * math.sin(radLatB) - math.sin(radLatA) * math.cos(radLatB) * math.cos(dLong) 
+        dir = math.degrees(math.atan2(y, x)) 
+        dir = (dir + 360) % 360 
         if dir < 0:
             dir = 360 + dir
         self.target_direction = dir # degrees
