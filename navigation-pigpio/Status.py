@@ -72,9 +72,6 @@ class Status:
         x = math.cos(radLatA) * math.sin(radLatB) - math.sin(radLatA) * math.cos(radLatB) * math.cos(dLong) 
         dir = math.degrees(math.atan2(y, x)) 
         dir = (dir + 360) % 360 
-        if dir < 0:
-            dir = 360 + dir
-        self.target_direction = dir # degrees
         return
 
     def hasPassedWayPoint(self):
