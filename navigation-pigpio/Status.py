@@ -31,11 +31,11 @@ class Status:
 
     def readGps(self):
         if self.gps_data.read():
+            self.boat_direction = self.getDirection(self.longitude, self.latitude, self.gps_data.longitude, self.gps_data.latitude)
             self.timestamp_string = self.gps_data.timestamp_string
             self.latitude = self.gps_data.latitude
             self.longitude = self.gps_data.longitude
             self.speed = self.gps_data.speed[2] #kph
-            self.boat_direction = self.gps_data.course
             return True
         else:
             return False
@@ -72,10 +72,20 @@ class Status:
         x = math.cos(radLatA) * math.sin(radLatB) - math.sin(radLatA) * math.cos(radLatB) * math.cos(dLong) 
         dir = math.degrees(math.atan2(y, x)) 
         dir = (dir + 360) % 360 
-        if dir < 0:
-            dir = 360 + dir
         self.target_direction = dir # degrees
         return
+
+    def getDirection(self, LonA, LatA, LonB, LatB):
+        radLonA = math.radians(LonA)
+        radLatA = math.radians(LatA)
+        radLonB = math.radians(LonB)
+        radLatB = math.radians(LatB)
+        dLong = radLonB - radLonA
+        y = math.sin(dLong) * math.cos(radLatB) 
+        x = math.cos(radLatA) * math.sin(radLatB) - math.sin(radLatA) * math.cos(radLatB) * math.cos(dLong) 
+        dir = math.degrees(math.atan2(y, x)) 
+        dir = (dir + 360) % 360 
+        return dir
 
     def hasPassedWayPoint(self):
         if self.target_distance < 1.0:
