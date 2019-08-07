@@ -38,9 +38,9 @@ class PositionalPID:
         self.temp = math.exp(-self.PidOutput)
 
         if self.PidOutput>0:                                                      
-            self.PidOutput=1/(1+self.temp)
+            self.PidOutput=1/(1+self.temp)-0.5
         if self.PidOutput<0:
-            self.PidOutput=(1/(1+self.temp))-2
+            self.PidOutput=(1/(1+self.temp))-0.5
 
         self.direction = self.PidOutput*30                                 
 
