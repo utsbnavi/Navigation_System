@@ -53,7 +53,7 @@ if __name__ == "__main__":
     num = 80
     neutral_to_max = 1900 - 1500
     dp = neutral_to_max / num
-    pulsewidth = 1500
+    servo_pulsewidth = 1500
     # move a servo motor
     for i in range(num):
         time.sleep(0.5)

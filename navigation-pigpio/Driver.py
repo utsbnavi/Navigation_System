@@ -74,7 +74,7 @@ class Driver:
 
             self.outPWM()
             self.printLog()
-            time.sleep(1)
+            time.sleep(10)
         return
             
     def getMode(self):
@@ -103,6 +103,7 @@ class Driver:
         return
 
     def readPWM(self):
+        self.pwm_read.measurePulseWidth()
         self.pwm_out.servo_pulsewidth = self.pwm_read.pulse_width[1]
         self.pwm_out.thruster_pulsewidth = self.pwm_read.pulse_width[2]
         return
@@ -115,9 +116,9 @@ class Driver:
         self.updateStatus()
         boat_direction = self.status.boat_direction
         target_direction = self.status.target_direction
-        servo_duty_ratio = self.pid.getStepSignal(target_direction, boat_direction)
-        self.pwm_out.servo_duty_ratio = servo_duty_ratio
-        self.pwm_out.thruster_duty_ratio = 9.0
+        servo_pulsewidth = self.pid.getStepSignal(target_direction, boat_direction)
+        self.pwm_out.servo_pulsewidth = servo_pulsewidth
+        self.pwm_out.thruster_pulsewidth = 1880
         return
 
     def remoteControl(self):
@@ -131,8 +132,8 @@ class Driver:
         longitude = self.status.longitude
         speed = self.status.speed
         direction = self.status.boat_direction
-        servo_dr = self.pwm_out.servo_duty_ratio
-        thruster_dr = self.pwm_out.thruster_duty_ratio
+        servo_pw = self.pwm_out.servo_pulsewidth
+        thruster_pw = self.pwm_out.thruster_pulsewidth
         t_direction = self.status.target_direction
         t_distance = self.status.target_distance
         target = self.status.waypoint.getPoint()
@@ -143,7 +144,7 @@ class Driver:
             '[%s MODE] LAT=%.5f, LON=%.5f, SPEED=%.2f [km/h], DIRECTION=%lf' %
             (mode, latitude, longitude, speed, direction)
         )
-        print('DUTY (SERVO, THRUSTER):       (%lf, %lf) [percent]' % (servo_dr, thruster_dr))
+        print('DUTY (SERVO, THRUSTER):       (%lf, %lf) [us]' % (servo_pw, thruster_pw))
         print('TARGET (LATITUDE, LONGITUDE): (%lf, %lf)' % (t_latitude, t_longitude))
         print('TARGET (DIRECTION, DISTANCE): (%lf, %lf [m])' % (t_direction, t_distance))
         print('')

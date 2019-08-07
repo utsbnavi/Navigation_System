@@ -31,6 +31,7 @@ class PositionalPID:
         import math
         
         Err = TargetAngle - SystemOutput
+        print("PID Err: ",Err)
         KpWork = self.Kp * Err
         KiWork = self.Ki * self.PIDErrADD
         KdWork = self.Kd * (Err - self.ErrBack)
@@ -42,7 +43,7 @@ class PositionalPID:
         if self.PidOutput<0:
             self.PidOutput=(1/(1+self.temp))-0.5
 
-        self.direction = self.PidOutput*30                                 
+        self.direction = self.PidOutput*60                             
 
         duty = 1000 / 180 * (self.direction + 90) + 1000                         
         
