@@ -37,14 +37,14 @@ class PositionalPID:
         self.PidOutput = KpWork + KiWork + KdWork
         self.temp = math.exp(-self.PidOutput)
 
-        if self.PidOutput>0:                                                      
+        if self.PidOutput>0:   #scale the output of PID to [-0.5, 0.5] using Sigmoid Funciton                                                   
             self.PidOutput=1/(1+self.temp)
         if self.PidOutput<0:
             self.PidOutput=(1/(1+self.temp))-2
 
-        self.direction = self.PidOutput*30                                 
+        self.direction = self.PidOutput*30     #scale the angle of servo to [-30, 30]                            
 
-        duty = 2 / 180 * (self.direction + 90) + 0.5                         
+        duty = 2 / 180 * (self.direction + 90) + 0.5    # the output angle is [60, 120]                     
         
         self.PIDErrADD += Err
         self.ErrBack = Err
