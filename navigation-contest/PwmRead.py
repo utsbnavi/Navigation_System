@@ -58,14 +58,16 @@ class PwmRead:
             GPIO.wait_for_edge(self.pin_mode, GPIO.RISING)
             start = time.time()
             GPIO.wait_for_edge(self.pin_mode, GPIO.FALLING)
-            pulse = time.time() - start
-            #if (pulse > 900) and (pulse < 2200):
-            sum = sum + pulse
-            #else:
-                #num_error = num_error + 1
-        ave = sum * 1000 * 1000 / (PwmRead.num_cycles - num_error)
-        if (ave > 700) and (ave < 2300):
-            self.pulse_width[0] = ave
+            pulse = (time.time() - start) * 1000 * 1000
+            if (pulse > 900) and (pulse < 2200):
+                sum = sum + pulse
+            else:
+                num_error = num_error + 1
+        
+        if PwmRead.num_cycles != num_error:
+            ave = sum / (PwmRead.num_cycles - num_error)
+            if (ave > 700) and (ave < 2300):
+                self.pulse_width[0] = ave
 
         # servo
         sum = 0.0
@@ -74,14 +76,16 @@ class PwmRead:
             GPIO.wait_for_edge(self.pin_servo, GPIO.RISING)
             start = time.time()
             GPIO.wait_for_edge(self.pin_servo, GPIO.FALLING)
-            pulse = time.time() - start
-            #if (pulse > 900) and (pulse < 2200):
-            sum = sum + pulse
-            #else:
-                #num_error = num_error + 1
-        ave = sum * 1000 * 1000 / (PwmRead.num_cycles - num_error)
-        if (ave > 1000) and (ave < 2000):
-            self.pulse_width[1] = ave
+            pulse = (time.time() - start) * 1000 * 1000
+            if (pulse > 900) and (pulse < 2200):
+                sum = sum + pulse
+            else:
+                num_error = num_error + 1
+
+        if PwmRead.num_cycles != num_error:
+            ave = sum / (PwmRead.num_cycles - num_error)
+            if (ave > 1000) and (ave < 2000):
+                self.pulse_width[1] = ave
 
         # thruster
         sum = 0.0
@@ -90,20 +94,22 @@ class PwmRead:
             GPIO.wait_for_edge(self.pin_thruster, GPIO.RISING)
             start = time.time()
             GPIO.wait_for_edge(self.pin_thruster, GPIO.FALLING)
-            pulse = time.time() - start
-            #if (pulse > 900) and (pulse < 2200):
-            sum = sum + pulse
-            #else:
-                #num_error = num_error + 1
-        ave = sum * 1000 * 1000 / (PwmRead.num_cycles - num_error)
-        ave = round(ave, -2)
-        if (ave > 1000) and (ave < 2000):
-            if (ave < 1100):
-                self.pulse_width[2] = 1100
-            elif(ave > 1900):
-                self.pulse_width[2] = 1900
+            pulse = (time.time() - start) * 1000 * 1000
+            if (pulse > 900) and (pulse < 2200):
+                sum = sum + pulse
             else:
-                self.pulse_width[2] = ave
+                num_error = num_error + 1
+
+        if PwmRead.num_cycles != num_error:
+            ave = sum / (PwmRead.num_cycles - num_error)
+            ave = round(ave, -2)
+            if (ave > 1000) and (ave < 2000):
+                if (ave < 1100):
+                    self.pulse_width[2] = 1100
+                elif(ave > 1900):
+                    self.pulse_width[2] = 1900
+                else:
+                    self.pulse_width[2] = ave
 
         #b = time.time() - a
         #print("It takes ", b, "[s] to measure PWM")
