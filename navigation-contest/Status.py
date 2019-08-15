@@ -31,7 +31,9 @@ class Status:
 
     def readGps(self):
         if self.gps_data.read():
-            self.boat_direction = self.getDirection(self.longitude, self.latitude, self.gps_data.longitude, self.gps_data.latitude)
+            diff = abs(self.longitude - self.gps_data.longitude) + abs(self.latitude - self.gps_data.latitude)
+            if diff >= 0.000001:
+                self.boat_direction = self.getDirection(self.longitude, self.latitude, self.gps_data.longitude, self.gps_data.latitude)
             self.timestamp_string = self.gps_data.timestamp_string
             self.latitude = self.gps_data.latitude
             self.longitude = self.gps_data.longitude
@@ -88,7 +90,7 @@ class Status:
         return dir
 
     def hasPassedWayPoint(self):
-        if self.target_distance < 1.0:
+        if self.target_distance < 15.0:
             return True
         else:
             return False

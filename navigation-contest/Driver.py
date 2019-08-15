@@ -144,7 +144,7 @@ class Driver:
         t_longitude = target[1]
         print(timestamp_string)
         print(
-            '[%s MODE] LAT=%.5f, LON=%.5f, SPEED=%.2f [km/h], DIRECTION=%lf' %
+            '[%s MODE] LAT=%.7f, LON=%.7f, SPEED=%.2f [km/h], DIRECTION=%lf' %
             (mode, latitude, longitude, speed, direction)
         )
         print('DUTY (SERVO, THRUSTER):       (%lf, %lf) [us]' % (servo_pw, thruster_pw))

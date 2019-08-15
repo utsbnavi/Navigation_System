@@ -12,7 +12,7 @@ import RPi.GPIO as GPIO
 import time
 
 class PwmRead:
-    num_cycles = 15
+    num_cycles = 7
 
     def __init__(self, pin_mode, pin_servo, pin_thruster):
         self.pin_servo = pin_servo
