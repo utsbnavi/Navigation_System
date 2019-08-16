@@ -32,8 +32,8 @@ class Status:
 
     def readGps(self):
         if self.gps_data.read():
-            # If the boat doesn't move in 1 [m], don't update the direciton
-            if self.getDistance(self.longitude, self.latitude, self.gps_data.longitude, self.gps_data.latitude) > 1:
+            # If the boat doesn't move in 0.5 [m], don't update the direciton
+            if self.getDistance(self.longitude, self.latitude, self.gps_data.longitude, self.gps_data.latitude) > 0.5:
                 self.boat_direction = self.getDirection(self.longitude, self.latitude, self.gps_data.longitude, self.gps_data.latitude)
             self.timestamp_string = self.gps_data.timestamp_string
             self.latitude = self.gps_data.latitude
