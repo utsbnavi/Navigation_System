@@ -65,7 +65,7 @@ class Driver:
         line = f.readline()
         line = f.readline()
         line = f.readline()
-        self.status.waypoint_range = float(line.split()[1]) # range of target point
+        self.status.waypoint_radius = float(line.split()[1]) # range of target point
         line = f.readline()
         num = int(line.split()[1]) # Number of waypoints
         line = f.readline()
@@ -164,6 +164,7 @@ class Driver:
         target = self.status.waypoint.getPoint()
         t_latitude = target[0]
         t_longitude = target[1]
+        err = self.pid.ErrBack
 
         # To print logdata
         print(timestamp_string)
@@ -178,7 +179,7 @@ class Driver:
         print('')
 
         # To write logdata (csv file)
-        log_list = [timestamp_string, mode, latitude, longitude, direction, speed, t_index, t_latitude, t_longitude, t_direction]
+        log_list = [timestamp_string, mode, latitude, longitude, direction, speed, t_index, t_latitude, t_longitude, t_direction, err]
         self.logger.write(log_list)
         return
 

@@ -27,7 +27,7 @@ class Status:
         self.timestamp_string = ''
         self.target_direction = 0.0
         self.target_distance = 0.0
-        self.waypoint_range = 0.0
+        self.waypoint_radius = 0.0
         self.gps_data = GpsData()
 
     def readGps(self):
@@ -103,7 +103,7 @@ class Status:
         return c * r * 1000
 
     def hasPassedWayPoint(self):
-        if self.target_distance < self.waypoint_range:
+        if self.target_distance < self.waypoint_radius:
             return True
         else:
             return False

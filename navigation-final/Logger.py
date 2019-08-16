@@ -16,7 +16,7 @@ class Logger:
     def open(self):
         self.f = open(Logger.filename, "a")
         self.writer = csv.writer(self.f, lineterminator='\n')
-        log_list = ['TIME_STAMP', 'MODE', 'LATITUDE', 'LONGITUDE', 'DIRECTION', 'SPEED','T_INDEX', 'T_LATITUDE', 'T_LONGITUDE', 'T_DIRECTION']
+        log_list = ['TIME_STAMP', 'MODE', 'LATITUDE', 'LONGITUDE', 'DIRECTION', 'SPEED','T_INDEX', 'T_LATITUDE', 'T_LONGITUDE', 'T_DIRECTION', 'ERR_BACK']
         self.writer.writerow(log_list)
 
     def write(self, log_list):
