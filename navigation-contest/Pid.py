@@ -43,7 +43,7 @@ class PositionalPID:
         if self.PidOutput<0:
             self.PidOutput=(1/(1+self.temp))-0.5
 
-        self.direction = self.PidOutput*60                             
+        self.direction = self.PidOutput*150                             
 
         duty = 1000 / 180 * (self.direction + 90) + 1000                         
         
